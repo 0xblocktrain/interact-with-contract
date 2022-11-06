@@ -39,7 +39,8 @@ export default function Home() {
   }, [web3])
 
   const mintNft = async() => {
-    const mint = await contract.methods.name().send({ from: address })
+    // get Name
+    const mint = await contract.methods.name().call()
     console.log(mint)
   }
 
