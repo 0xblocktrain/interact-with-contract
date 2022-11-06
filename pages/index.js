@@ -26,8 +26,21 @@ export default function Home() {
     }
   }
 
+  console.log("Address ", address)
+  console.log("WEB3 ", web3)
+  console.log("CONTRACT ", contract)
+
+  useEffect(() => {
+    if(web3) {
+      let w3 = new Web3(ethereum)
+      let c = new w3.eth.Contract(abi, CONTRACT_ADDRESS)
+      setContract(c)
+    }
+  }, [web3])
+
   const mintNft = async() => {
-    console.log("mint")
+    const mint = await contract.methods.name().send({ from: address })
+    console.log(mint)
   }
 
   return (
