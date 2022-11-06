@@ -32,7 +32,16 @@ export default function Home() {
   console.log("CONTRACT ", contract)
   
   const mintNft = async() => {
-    console.log("Minted")
+    try {
+      setLoading(true)
+      const mint = await contract.safeMint()
+      await mint.wait()
+      console.log("MINTED ", mint)
+      setLoading(false)
+    } catch(err) {
+      console.log(err)
+      setLoading(false)
+    }
   }
 
   return (
