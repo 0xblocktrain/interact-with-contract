@@ -1,6 +1,35 @@
+import { useState, useEffect } from 'react'
+import Web3 from 'web3'
+import { abi } from '../utils/abi'
 import Head from 'next/head'
 
 export default function Home() {
+  const CONTRACT_ADDRESS = "0x316f938782c23Eb5A4a6AFE7F09b440478cdb026"
+  const [address, setAddress] = useState(null)
+  const [web3, setWeb3] = useState(null)
+  const [contract, setContract] = useState(null)
+
+  const connectWallet = async () => {
+    if(window) {
+      const { ethereum } = window
+      if(ethereum) {
+        try {
+          const accounts = await ethereum.request({ method: "eth_requestAccounts" })
+          console.log(accounts)
+          setAddress(accounts[0])
+          let w3 = new Web3(ethereum)
+          setWeb3(w3)
+        } catch(err) {
+          console.log(err)
+        }
+      }
+    }
+  }
+
+  const mintNft = async() => {
+    console.log("mint")
+  }
+
   return (
     <div>
       <Head>
@@ -9,8 +38,15 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex items-center justify-center min-h-screen">
-        <h1 className='text-4xl font-extrabold'>Hello world</h1>
+      <main className="flex flex-col gap-4 items-center justify-center min-h-screen">
+        <h1 className='text-4xl font-extrabold'>Interact with contract</h1>
+        {
+          address ? (
+            <button onClick={mintNft} className='py-2 px-4 rounded-xl bg-white text-black transform hover:scale-105'>Mint NFT</button>
+            ) : (
+            <button onClick={connectWallet} className='py-2 px-4 rounded-xl bg-white text-black transform hover:scale-105'>Connect Wallet</button>
+          )
+        }
       </main>
     </div>
   )
